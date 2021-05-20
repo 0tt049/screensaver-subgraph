@@ -1,0 +1,60 @@
+type Account @entity {
+  id: ID!
+  address: Bytes!
+  isWhitelisted: Boolean
+
+  bids: [BidLog!]! @derivedFrom(field: "bidder")
+  created: [Artwork!]! @derivedFrom(field: "creator")
+  items: [Artwork!]! @derivedFrom(field: "owner")
+}
+
+type Artwork @entity {
+  id: ID!
+  tokenId: BigInt!
+  creator: Account!
+  owner: Account!
+  version: ArtworkMetadata!
+
+  # Metadata
+  descriptorUri: String!
+  descriptorHash: String
+
+  name: String
+  description: String
+  yearCreated: String
+  createdBy: String
+  tags: [String!]
+  imageUri: String
+  imageHash: String
+  mediaType: String
+  mediaSize: String
+
+  currentBid: BidLog
+  salePrice: BigInt
+
+  created: BigInt!
+  modified: BigInt
+  removed: BigInt
+}
+
+enum ArtworkMetadata {
+  V1
+  V2
+}
+
+type BidLog @entity {
+  id: ID!
+  amount: BigInt!
+  bidder: Account!
+  item: Artwork!
+  timestamp: BigInt!
+}
+
+type SaleLog @entity {
+  id: ID!
+  amount: BigInt!
+  buyer: Account!
+  item: Artwork!
+  seller: Account!
+  timestamp: BigInt!
+}

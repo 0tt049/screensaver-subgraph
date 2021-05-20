@@ -1,0 +1,41 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: screensaver
+    kind: ethereum/contract
+    network: matic
+    source:
+      abi: screensaver
+      address: '0x2452d8049F04d54cA779257678A691eE4a413267'
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      file: ./src/mappings/v1.ts
+      language: wasm/assemblyscript
+      abis:
+        - name: screensaver
+          file: ./abis/screensaver.json
+      entities:
+        - Account
+        - BidLog
+        - Item
+        - SaleLog
+      eventHandlers:
+        # - event: bid(indexed address,indexed uint256,indexed uint256)
+        #   handler: handleBid
+        # - event: AcceptBid(indexed address,indexed address,uint256,indexed uint256)
+        #   handler: handleAcceptBid
+        # - event: CancelBid(indexed address,indexed uint256,indexed uint256)
+        #   handler: handleCancelBid
+        # - event: Sold(indexed address,indexed address,uint256,indexed uint256)
+        #   handler: handleSold
+        # - event: SalePriceSet(indexed uint256,indexed uint256)
+        #   handler: handleSalePriceSet
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        # - event: bid(uint256 _tokenId)
+        #   topic0: "0x454a2ab300000000000000000000000000000000000000000000000000000000"
+        #   handler: handleBid
